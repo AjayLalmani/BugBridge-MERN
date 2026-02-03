@@ -1,59 +1,77 @@
-const User = require("../models/User");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const User = require('../models/User');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
+// 1. REGISTER USER
 exports.register = async (req, res) => {
+  const { name, email, password } = req.body;
   try {
-    const { name, email, password } = req.body;
     let user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ message: 'User already exists' });
     }
 
+    user = new User({ name, email, password });
+    
+    // Password Hash
     const salt = await bcrypt.genSalt(10);
-    const hashPassword = await bcrypt.hash(password, salt);
-
-    user = new User({
-      name,
-      email,
-      password: hashPassword,
-    });
-
+    user.password = await bcrypt.hash(password, salt);
+    
     await user.save();
 
-    const payload = { userId: user.id };
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-    res.status(201).json({ token, message: "User registered successfully!" });
+    // Token Generate
+    const payload = { user: { id: user.id } };
+    jwt.sign(
+      payload, 
+      process.env.JWT_SECRET, 
+      { expiresIn: '5d' }, 
+      (err, token) => {
+        if (err) throw err;
+        res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
+      }
+    );
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 };
 
+// 2. LOGIN USER
 exports.login = async (req, res) => {
+  const { email, password } = req.body;
   try {
-    const { email, password } = req.body;
+    // Check Email
     let user = await User.findOne({ email });
-
     if (!user) {
-      return res.status(400).json({ message: "Invalid Credentials" });
+      return res.status(400).json({ message: 'Invalid Credentials (Email not found)' });
     }
 
-    let isMatch = await bcrypt.compare(password, user.password);
+    // Check Password
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      res.status(400).json({ message: "Invalid Credentials" });
+      return res.status(400).json({ message: 'Invalid Credentials (Wrong Password)' });
     }
 
-    const payload = { userId: user.id };
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-
-    res.json({ token, message: "Welcome back login successfull !" });
+    // Return Token & User Info
+    const payload = { user: { id: user.id } };
+    jwt.sign(
+      payload, 
+      process.env.JWT_SECRET, 
+      { expiresIn: '5d' }, 
+      (err, token) => {
+        if (err) throw err;
+        res.json({ 
+          token,
+          user: { 
+            id: user.id, 
+            name: user.name, 
+            email: user.email 
+          }
+        });
+      }
+    );
   } catch (err) {
-    console.log(err);
-    res.status(500).send("Internal server error");
+    console.error("LOGIN ERROR:", err.message);
+    res.status(500).send('Server Error');
   }
 };

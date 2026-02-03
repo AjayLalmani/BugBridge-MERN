@@ -1,43 +1,58 @@
-import { useState } from 'react';
-import axios from 'axios';
-import api from '../utils/api';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import api from "../utils/api";
+import { useNavigate, Link } from "react-router-dom"; // Link bhi import kiya signup ke liye
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault(); 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const res = await api.post('/auth/login', {
-        email,
-        password
-      });
+      const res = await api.post("/auth/login", { email, password });
 
-      localStorage.setItem('token', res.data.token);
-      alert(res.data.message);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      navigate('/dashboard');
-
+      console.log("Login Successful");
+      navigate("/dashboard");
     } catch (err) {
-      alert(err.response?.data?.message || 'Login Failed');
+      console.error(err);
+      alert(err.response?.data?.message || "Invalid Credentials");
     }
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-blue-50">
-      <div className="w-96 p-8 bg-white rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">Login to BugBridge</h2>
-        
-        <form onSubmit={handleLogin}>
+    <div className="flex justify-center items-center h-screen bg-gray-50">
+      <div className="w-96 p-8 bg-white rounded-xl shadow-xl border border-gray-100">
+        {/* 👇 DESIGN UPDATED HERE */}
+        <h2 className="mb-8 text-center">
+          {/* Top Line: Login to */}
+          <span className="block text-gray-500 text-sm font-semibold tracking-wide uppercase mb-1">
+            Welcome Back
+          </span>
+
+          {/* Bottom Line: Logo Style (Matches Navbar Option 2) */}
+          <div className="flex items-center justify-center gap-1">
+            <span className="text-gray-600 text-xl font-medium mr-1">
+              Login to
+            </span>
+            <span className="text-2xl font-extrabold text-gray-900 tracking-tighter">
+              Bug<span className="text-blue-600">Bridge</span>
+            </span>
+          </div>
+        </h2>
+
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Email</label>
-            <input 
-              type="email" 
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="Enter your email"
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Email Address
+            </label>
+            <input
+              type="email"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition shadow-sm"
+              placeholder="name@company.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -45,24 +60,36 @@ export default function Login() {
           </div>
 
           <div className="mb-6">
-            <label className="block text-gray-700 mb-2">Password</label>
-            <input 
-              type="password" 
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="Enter your password"
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Password
+            </label>
+            <input
+              type="password"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition shadow-sm"
+              placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
 
-          <button 
-            type="submit" 
-            className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition"
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition font-bold shadow-md hover:shadow-lg transform active:scale-95 duration-200"
           >
             Login
           </button>
         </form>
+
+        <p className="mt-6 text-center text-sm text-gray-600">
+          New here?{" "}
+          <Link
+            to="/signup"
+            className="text-blue-600 font-bold hover:underline"
+          >
+            Create an account
+          </Link>
+        </p>
       </div>
     </div>
   );

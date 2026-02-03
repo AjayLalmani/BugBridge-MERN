@@ -1,19 +1,20 @@
 const mongoose = require('mongoose');
 
-const projectSchema = new mongoose.Schema({
+const ProjectSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
-    trim: true
+    required: true
   },
   description: {
     type: String
   },
-  owner: {
+  // Owner (Jo project banata hai)
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
+  // 👇 Ye naya part add karo: Team Members ki list
   members: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -26,4 +27,4 @@ const projectSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Project', projectSchema);
+module.exports = mongoose.model('Project', ProjectSchema);
