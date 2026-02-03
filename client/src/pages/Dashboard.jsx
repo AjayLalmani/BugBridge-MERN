@@ -115,7 +115,7 @@ export default function Dashboard() {
                   {isOwner && (
                     <button
                       onClick={(e) => handleDeleteProject(e, project._id)}
-                      className="absolute top-4 right-4 text-gray-400 hover:text-red-500 font-bold text-xl opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute top-4 right-4 text-gray-400 hover:text-red-500 font-bold text-xl transition-opacity"
                       title="Delete Project"
                     >
                       <span className="material-symbols-outlined">delete</span>
