@@ -18,11 +18,11 @@ const TaskSchema = new mongoose.Schema({
     enum: ['Low', 'Medium', 'High'],
     default: 'Medium'
   },
-  // 👇 Naya Field: Kisko assign kiya hai?
+  
   assignedTo: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    default: null // Shuru mein kisi ko assign nahi hoga
+    default: null 
   },
   project: {
     type: mongoose.Schema.Types.ObjectId,

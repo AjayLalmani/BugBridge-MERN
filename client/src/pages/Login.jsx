@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "../utils/api";
-import { useNavigate, Link } from "react-router-dom"; // Link bhi import kiya signup ke liye
+import { useNavigate, Link } from "react-router-dom"; 
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -26,14 +26,14 @@ export default function Login() {
   return (
     <div className="flex justify-center items-center h-screen bg-gray-50">
       <div className="w-96 p-8 bg-white rounded-xl shadow-xl border border-gray-100">
-        {/* 👇 DESIGN UPDATED HERE */}
+        {}
         <h2 className="mb-8 text-center">
-          {/* Top Line: Login to */}
+          {}
           <span className="block text-gray-500 text-sm font-semibold tracking-wide uppercase mb-1">
             Welcome Back
           </span>
 
-          {/* Bottom Line: Logo Style (Matches Navbar Option 2) */}
+          {}
           <div className="flex items-center justify-center gap-1">
             <span className="text-gray-600 text-xl font-medium mr-1">
               Login to

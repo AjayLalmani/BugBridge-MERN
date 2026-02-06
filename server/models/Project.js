@@ -8,13 +8,13 @@ const ProjectSchema = new mongoose.Schema({
   description: {
     type: String
   },
-  // Owner (Jo project banata hai)
+  
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
-  // 👇 Ye naya part add karo: Team Members ki list
+  
   members: [
     {
       type: mongoose.Schema.Types.ObjectId,

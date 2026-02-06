@@ -7,19 +7,19 @@ export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // --- SAFE USER DATA FETCHING (CRASH FIX) ---
+  
   const token = localStorage.getItem("token");
   let user = {};
 
   try {
     const storedUser = localStorage.getItem("user");
-    // Check agar data exist karta hai aur wo string "undefined" nahi hai
+    
     if (storedUser && storedUser !== "undefined") {
       user = JSON.parse(storedUser);
     }
   } catch (err) {
     console.error("Corrupt user data found in NavBar, resetting...", err);
-    localStorage.removeItem("user"); // Kharab data hata do taaki agli baar crash na ho
+    localStorage.removeItem("user"); 
   }
 
   const handleLogout = () => {
@@ -28,7 +28,7 @@ export default function Navbar() {
     navigate("/login");
   };
 
-  // Dropdown ke bahar click karne par band hona chahiye
+  
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -39,7 +39,7 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Helper: Name ka pehla letter
+  
   const getInitials = (name) => {
     return name ? name.charAt(0).toUpperCase() : "U";
   };
@@ -47,25 +47,25 @@ export default function Navbar() {
   return (
     <nav className="bg-white shadow-md p-4 relative z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        {/* LOGO */}
+        {}
 
         <Link to="/" className="flex items-center gap-1 group select-none">
-          {/* ICON */}
+          {}
           <span className="pt-[2.2px] material-symbols-outlined text-blue-600 text-4xl group-hover:scale-110 transition-transform duration-200">
             bug_report
           </span>
 
-          {/* TEXT - Added 'pt-1' to push text down slightly */}
+          {}
           <span className="text-2xl font-extrabold text-gray-900 tracking-tighter ">
             Bug<span className="text-blue-600">Bridge</span>
           </span>
         </Link>
 
-        {/* RIGHT SIDE MENU */}
+        {}
         <div className="flex gap-6 items-center">
           {token ? (
             <>
-              {/* 1. Dashboard Link (Sirf tab dikhega jab hum Dashboard par NAHI hain) */}
+              {}
               {location.pathname !== "/dashboard" && (
                 <Link
                   to="/dashboard"
@@ -75,9 +75,9 @@ export default function Navbar() {
                 </Link>
               )}
 
-              {/* 2. User Profile Dropdown */}
+              {}
               <div className="relative" ref={dropdownRef}>
-                {/* Avatar Button */}
+                {}
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className="flex items-center gap-2 focus:outline-none"
@@ -87,10 +87,10 @@ export default function Navbar() {
                   </div>
                 </button>
 
-                {/* Dropdown Menu */}
+                {}
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-100 py-2 animate-fade-in-down">
-                    {/* User Info Header */}
+                    {}
                     <div className="px-4 py-3 border-b border-gray-100">
                       <p className="text-sm font-bold text-gray-800">
                         {user.name || "User"}
@@ -102,7 +102,7 @@ export default function Navbar() {
 
                 
 
-                    {/* Logout */}
+                    {}
                     <button
                       onClick={handleLogout}
                       className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition font-medium"
@@ -114,7 +114,7 @@ export default function Navbar() {
               </div>
             </>
           ) : (
-            // Agar Login NAHI hai
+            
             <div className="flex gap-4">
               <Link
                 to="/login"

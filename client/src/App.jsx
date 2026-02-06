@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Navbar from './components/Navbar'; // 👈 Navbar Import
+import Navbar from './components/Navbar'; 
 import Login from './pages/Login';
-import Signup from './pages/Signup';     // 👈 Signup Import
+import Signup from './pages/Signup';     
 import Dashboard from './pages/Dashboard';
 import ProjectDetails from './pages/ProjectDetails';
 
 function App() {
-  // Check login for protected routes
+  
   const PrivateRoute = ({ children }) => {
     const token = localStorage.getItem('token');
     return token ? children : <Navigate to="/login" />;
@@ -14,14 +14,14 @@ function App() {
 
   return (
     <Router>
-      <Navbar /> {/* 👈 Ye har page ke upar dikhega */}
+      <Navbar /> {}
       
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} /> {/* 👈 Naya Route */}
+        <Route path="/signup" element={<Signup />} /> {}
         
-        {/* Protected Routes */}
+        {}
         <Route 
           path="/dashboard" 
           element={

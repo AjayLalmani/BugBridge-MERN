@@ -10,30 +10,30 @@ export default function ProjectDetails() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Create Form States
+  
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDesc, setTaskDesc] = useState("");
   const [assignedTo, setAssignedTo] = useState("");
   const [priority, setPriority] = useState("Medium");
   const [inviteEmail, setInviteEmail] = useState("");
 
-  // Filter States
+  
   const [searchQuery, setSearchQuery] = useState("");
   const [filterPriority, setFilterPriority] = useState("All");
   const [filterAssignee, setFilterAssignee] = useState("All");
 
-  // Edit & Comments States
+  
   const [editingTask, setEditingTask] = useState(null);
   const [editTitle, setEditTitle] = useState("");
   const [editDesc, setEditDesc] = useState("");
   const [editAssignedTo, setEditAssignedTo] = useState("");
   const [editPriority, setEditPriority] = useState("Medium");
 
-  // Comments State
+  
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
 
-  // FETCH DATA
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -71,14 +71,14 @@ export default function ProjectDetails() {
     ? [project.user, ...project.members].filter(Boolean)
     : [];
 
-  // 👇👇👇 1. LOGIC ADDED: CHECK IF CURRENT USER IS OWNER 👇👇👇
+  
   const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
   const isOwner =
     project &&
     project.user &&
     (project.user._id === currentUser.id || project.user === currentUser.id);
 
-  // --- HANDLERS (Create, Delete, Edit, Drag) ---
+  
   const handleAddTask = async (e) => {
     e.preventDefault();
     if (!taskTitle) return alert("Task title zaroori hai!");
@@ -107,7 +107,7 @@ export default function ProjectDetails() {
       await api.delete(`/tasks/${taskId}`);
       setTasks(tasks.filter((t) => t._id !== taskId));
     } catch (err) {
-      // Agar backend se error aaya (Not Authorized), toh alert dikhao
+      
       alert(err.response?.data?.message || "Could not delete task");
     }
   };
@@ -210,7 +210,7 @@ export default function ProjectDetails() {
           ← Back
         </button>
 
-        {/* HEADER */}
+        {}
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold text-gray-900">{project.title}</h1>
           <div className="text-sm text-gray-500">
@@ -221,7 +221,7 @@ export default function ProjectDetails() {
           </div>
         </div>
 
-        {/* SEARCH & FILTER BAR */}
+        {}
         <div className="bg-white p-4 rounded shadow mb-6 border border-gray-200 flex gap-4 flex-wrap items-center">
           <div className="flex items-center gap-2 flex-1">
             <span className="material-symbols-outlined text-gray-400">
@@ -261,7 +261,7 @@ export default function ProjectDetails() {
           </select>
         </div>
 
-        {/* INVITE SECTION */}
+        {}
         <div className="bg-white p-4 rounded shadow mb-6 border border-gray-200">
           <h3 className="font-bold text-gray-700 mb-2">Team & Invite</h3>
           <div className="flex gap-4 items-center flex-wrap">
@@ -293,7 +293,7 @@ export default function ProjectDetails() {
           </div>
         </div>
 
-        {/* ADD TASK FORM */}
+        {}
         <div className="bg-white p-4 rounded shadow mb-8 border border-gray-200">
           <h3 className="font-bold text-gray-700 mb-3">Add New Task</h3>
           <form onSubmit={handleAddTask} className="flex gap-2 flex-wrap">
@@ -336,7 +336,7 @@ export default function ProjectDetails() {
           </form>
         </div>
 
-        {/* KANBAN BOARD */}
+        {}
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {["Todo", "In Progress", "Done"].map((status) => (
@@ -347,14 +347,14 @@ export default function ProjectDetails() {
                 tasks={tasks.filter((t) => t.status === status)}
                 onDelete={handleDeleteTask}
                 onEdit={openEditModal}
-                isOwner={isOwner} // 👈 2. PROP PASSED HERE
+                isOwner={isOwner} 
               />
             ))}
           </div>
         </DragDropContext>
       </div>
 
-      {/* EDIT & COMMENTS MODAL */}
+      {}
       {editingTask && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 transition-all p-4">
           <div className="bg-white rounded-lg shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col animate-fade-in">
@@ -432,7 +432,7 @@ export default function ProjectDetails() {
                   Save Changes
                 </button>
               </div>
-              {/* COMMENTS */}
+              {}
               <div>
                 <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
                   <span className="material-symbols-outlined text-gray-500">
@@ -487,8 +487,8 @@ export default function ProjectDetails() {
   );
 }
 
-// --- COLUMN COMPONENT (Updated with isOwner) ---
-// 👇 3. PROP RECEIVED HERE
+
+
 function TaskColumn({ title, id, tasks, onDelete, onEdit, isOwner }) {
   const getPriorityColor = (p) => {
     if (p === "High") return "bg-red-100 text-red-700 border-red-200";
@@ -539,7 +539,7 @@ function TaskColumn({ title, id, tasks, onDelete, onEdit, isOwner }) {
                     )}
                     <div className="flex justify-between items-center mt-3">
                       
-                      {/* 👇👇👇 4. BUTTON CONDITION ADDED HERE 👇👇👇 */}
+                      {}
                       {isOwner ? (
                         <button
                           onClick={(e) => onDelete(e, task._id)}
@@ -550,7 +550,7 @@ function TaskColumn({ title, id, tasks, onDelete, onEdit, isOwner }) {
                           </span>
                         </button>
                       ) : (
-                        <span></span> // Empty span for spacing
+                        <span></span> 
                       )}
 
                       {task.assignedTo && (

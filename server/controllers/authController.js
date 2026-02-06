@@ -2,7 +2,7 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-// 1. REGISTER USER
+
 exports.register = async (req, res) => {
   const { name, email, password } = req.body;
   try {
@@ -13,13 +13,13 @@ exports.register = async (req, res) => {
 
     user = new User({ name, email, password });
     
-    // Password Hash
+    
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
     
     await user.save();
 
-    // Token Generate
+    
     const payload = { user: { id: user.id } };
     jwt.sign(
       payload, 
@@ -36,23 +36,23 @@ exports.register = async (req, res) => {
   }
 };
 
-// 2. LOGIN USER
+
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    // Check Email
+    
     let user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: 'Invalid Credentials (Email not found)' });
     }
 
-    // Check Password
+    
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid Credentials (Wrong Password)' });
     }
 
-    // Return Token & User Info
+    
     const payload = { user: { id: user.id } };
     jwt.sign(
       payload, 

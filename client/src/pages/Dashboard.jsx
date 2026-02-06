@@ -8,7 +8,7 @@ export default function Dashboard() {
   const [newDesc, setNewDesc] = useState("");
   const navigate = useNavigate();
 
-  // 👇 1. Current User nikalo (Jo abhi login hai)
+  
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function Dashboard() {
       await api.delete(`/projects/${projectId}`);
       setProjects(projects.filter((p) => p._id !== projectId));
     } catch (err) {
-      // Agar backend se 403 (Forbidden) aaye toh alert dikhao
+      
       alert(err.response?.data?.msg || "Error deleting project");
     }
   };
@@ -61,7 +61,7 @@ export default function Dashboard() {
           My Dashboard 🚀
         </h1>
 
-        {/* --- CREATE PROJECT FORM --- */}
+        {}
         <div className="bg-white p-6 rounded-lg shadow-md mb-10 border border-blue-100">
           <h2 className="text-xl font-semibold mb-4 text-blue-600">
             Create New Project
@@ -90,7 +90,7 @@ export default function Dashboard() {
           </form>
         </div>
 
-        {/* --- PROJECTS LIST --- */}
+        {}
         <h2 className="text-2xl font-bold text-gray-700 mb-4">Your Projects</h2>
 
         {projects.length === 0 ? (
@@ -100,8 +100,8 @@ export default function Dashboard() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project) => {
-              // 👇 2. Check: Kya main Owner hoon?
-              // Kabhi project.user string ID hoti hai, kabhi object. Dono handle kiye.
+              
+              
               const isOwner =
                 project.user === user.id || project.user?._id === user.id;
 
@@ -111,7 +111,7 @@ export default function Dashboard() {
                   onClick={() => navigate(`/project/${project._id}`)}
                   className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition cursor-pointer border border-gray-200 relative group"
                 >
-                  {/* 👇 3. Delete Button (Sirf Owner ko dikhega) */}
+                  {}
                   {isOwner && (
                     <button
                       onClick={(e) => handleDeleteProject(e, project._id)}
